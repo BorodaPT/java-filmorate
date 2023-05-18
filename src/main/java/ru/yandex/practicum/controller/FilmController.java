@@ -28,7 +28,7 @@ public class FilmController {
     }
 
     @PostMapping("/films")
-    public String createUser(@Valid @RequestBody Film film) {
+    public String createFilm(@Valid @RequestBody Film film) {
         log.info("Создание фильма");
         if (checkFilm(film)) {
             return "Данный фильм уже добавлен";
@@ -38,8 +38,8 @@ public class FilmController {
         }
     }
 
-    @PutMapping("/films/name")
-    public String updateUser(@Valid @RequestBody Film film) {
+    @PutMapping("/films")
+    public String updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновление фильма");
         if (checkFilm(film)) {
             films.put(film.getName(), film);

@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/name")
+    @PutMapping("/users")
     public String updateUser(@Valid @RequestBody User user) {
         log.info("Обновление пользователя");
         if (checkUser(user)) {

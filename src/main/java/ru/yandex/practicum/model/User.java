@@ -24,6 +24,6 @@ public class User {
     private String login;
     private String name;
     @Past(message = "Дата рождения не может быть больше текущей")
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 }
