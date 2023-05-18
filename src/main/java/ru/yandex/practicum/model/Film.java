@@ -22,10 +22,9 @@ public class Film {
     private String name;
     @Size(max = 200, message = "Превышена максимальная длина описания(200)") //validation.name.size.too_long
     private String description;
-    @JsonFormat(pattern="yyyy-MM-dd")
     @MinDateFilms(message = "Дата фильма не может быть меньше 28.12.1895")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность должна быть положительной")
     private int duration;
-
 }
