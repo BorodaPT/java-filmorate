@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.exception.DefaultMessageException;
 import ru.yandex.practicum.model.Film;
 
 
@@ -30,7 +31,7 @@ public class FilmController {
         log.info("Создание фильма");
         if (films.containsKey(film.getId())) {
             log.info("Фильм уже есть");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Фильм уже присутствует");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Фильм уже зарегестрирован"));
         } else {
             addFilm(film);
             return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
@@ -46,7 +47,7 @@ public class FilmController {
             return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
         } else {
             log.info("Фильм отсутствует");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Фильм отсутствует");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Фильм для обновления отсутствует"));
         }
     }
 

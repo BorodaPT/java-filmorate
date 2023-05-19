@@ -1,13 +1,13 @@
 package ru.yandex.practicum.controller;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.model.User;
 
+import ru.yandex.practicum.exception.DefaultMessageException;
+import ru.yandex.practicum.model.User;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +19,18 @@ public class UserController {
     private int userId = 0;
     private HashMap<Integer, User> users = new HashMap<>();
 
+    private void checkName(User user) {
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+        } else if (user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+    }
+
     private void addUser(User user) {
         userId++;
         user.setId(userId);
-        if (user.getName().equals("")) {
-            user.setName(user.getLogin());
-        }
+        checkName(user);
         users.put(user.getId(), user);
     }
 
@@ -33,7 +39,7 @@ public class UserController {
         log.info("Создание пользователя");
         if (users.containsKey(user.getId())) {
             log.info("Создание пользователя");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Пользователь присутствует");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь присутствует"));
         } else {
             addUser(user);
             return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
@@ -44,12 +50,13 @@ public class UserController {
     public ResponseEntity updateUser(@Valid @RequestBody User user) {
         log.info("Обновление пользователя");
         if (users.containsKey(user.getId())) {
+            checkName(user);
             users.put(user.getId(), user);
             log.info("Пользователь обновлен");
             return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
         } else {
             log.info("Пользователь отсутствует");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Пользователь отсутствует");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь отсутствует"));
         }
     }
 
@@ -58,5 +65,7 @@ public class UserController {
         log.debug("Текущее количество пользователей: {}", users.size());
         return  new ArrayList<User>(users.values());
     }
+
+
 
 }
