@@ -3,7 +3,10 @@ package ru.yandex.practicum.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.model.Film;
 import ru.yandex.practicum.model.User;
 
 import javax.validation.Valid;
@@ -15,7 +18,7 @@ import java.util.List;
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private int userId = 0;
-    private HashMap<String, User> users = new HashMap<>();
+    private HashMap<Integer, User> users = new HashMap<>();
 
     private void addUser(User user) {
         userId++;
@@ -23,36 +26,35 @@ public class UserController {
         if (user.getName().equals("")) {
             user.setName(user.getLogin());
         }
-        users.put(user.getLogin(), user);
-    }
-
-    private boolean checkUser(User user) {
-        return users.containsKey(user.getLogin());
+        users.put(user.getId(), user);
     }
 
     @PostMapping("/users")
-    public String createUser(@Valid @RequestBody User user) {
+    public ResponseEntity createUser(@Valid @RequestBody User user) {
         log.info("Создание пользователя");
-        if (checkUser(user)) {
-            return "Данный логин уже зарегестрирован";
+        if (users.containsKey(user.getId())) {
+            log.info("Создание пользователя");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Пользователь присутствует");
         } else {
             addUser(user);
-            return "Пользователь добавлен";
+            return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
         }
     }
 
     @PutMapping("/users")
-    public String updateUser(@Valid @RequestBody User user) {
+    public ResponseEntity updateUser(@Valid @RequestBody User user) {
         log.info("Обновление пользователя");
-        if (checkUser(user)) {
-            users.put(user.getLogin(), user);
-            return "Пользователь обновлен";
+        if (users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+            log.info("Пользователь обновлен");
+            return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
         } else {
-            return "Пользователя не существует";
+            log.info("Пользователь отсутствует");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Пользователь отсутствует");
         }
     }
 
-    @GetMapping("/users/list")
+    @GetMapping("/users")
     public List<User> getAll() {
         log.debug("Текущее количество пользователей: {}", users.size());
         return  new ArrayList<User>(users.values());
