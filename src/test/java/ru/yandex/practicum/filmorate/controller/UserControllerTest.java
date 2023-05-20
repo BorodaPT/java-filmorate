@@ -21,8 +21,8 @@ public class UserControllerTest {
     //создание user
     @Test
     public void createUserTestCorrect() throws Exception {
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ya@mail.com\",\"login\":\"Testusers1\",\"name\":\"123\",\"birthday\":\"2019-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
@@ -36,8 +36,8 @@ public class UserControllerTest {
 
     @Test
     public void createUserTestFuture() throws Exception {
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ya@mail.com\",\"login\":\"Testusers1\",\"name\":\"123\",\"birthday\":\"2030-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().is4xxClientError())
@@ -47,8 +47,8 @@ public class UserControllerTest {
 
     @Test
     public void createUserTestBadEmail() throws Exception {
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"yamail.com\",\"login\":\"Testusers1\",\"name\":\"123\",\"birthday\":\"2020-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().is4xxClientError())
@@ -58,15 +58,15 @@ public class UserControllerTest {
 
     @Test
     public void createUserTestBadLogin() throws Exception {
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ya@mail.com\",\"login\":\"\",\"name\":\"123\",\"birthday\":\"2020-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.violations[0].message").value("Логин не может быть пустым или состоять только из пробелов"))
                 .andReturn();
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ya@mail.com\",\"name\":\"123\",\"birthday\":\"2020-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().is4xxClientError())
@@ -77,14 +77,14 @@ public class UserControllerTest {
     //изменение
     @Test
     public void updateUserTestCorrect() throws Exception {
-        mockMvc.perform(post("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ya@mail.com\",\"login\":\"Testusers1\",\"name\":\"123\",\"birthday\":\"2019-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andReturn();
-        mockMvc.perform(put("/users").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"1\", \"email\":\"ya@mail.com\",\"login\":\"Testusers1\",\"name\":\"ddd\",\"birthday\":\"2019-04-04\"}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())

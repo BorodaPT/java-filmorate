@@ -22,8 +22,8 @@ public class FilmControllerTest {
     //создание film
     @Test
     public void createFilmTestCorrect() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Му-му\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-01-01\",\"duration\":60}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
@@ -36,8 +36,8 @@ public class FilmControllerTest {
 
     @Test
     public void createFilmTestBadName() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-01-01\",\"duration\":60}")
                         .characterEncoding("utf-8"))
                 .andExpect(jsonPath("$.violations[0].message").value("Название фильма не может быть пустым"))
@@ -46,8 +46,8 @@ public class FilmControllerTest {
 
     @Test
     public void createFilmTestBadDescription() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"му-му\",\"description\":\"По рассказам великого писателяПо рассказам великого писателяПо рассказам великого писателяПо рассказам великого писателя" +
                                 "По рассказам великого писателяПо рассказам великого писателяПо рассказам великого писателяПо рассказам великого писателя\"," +
                                 "\"releaseDate\":\"2000-01-01\",\"duration\":60}")
@@ -58,8 +58,8 @@ public class FilmControllerTest {
 
     @Test
     public void createFilmTestBadDate() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"му-му\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"1895-11-01\",\"duration\":60}")
                         .characterEncoding("utf-8"))
                 .andExpect(jsonPath("$.violations[0].message").value("Дата фильма не может быть меньше 28.12.1895"))
@@ -68,8 +68,8 @@ public class FilmControllerTest {
 
     @Test
     public void createFilmTestBadDuration() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"му-му\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-11-01\",\"duration\":-60}")
                         .characterEncoding("utf-8"))
                 .andExpect(jsonPath("$.violations[0].message").value("Продолжительность должна быть положительной"))
@@ -79,14 +79,14 @@ public class FilmControllerTest {
     //изменение
     @Test
     public void updateUserTestCorrect() throws Exception {
-        mockMvc.perform(post("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Му-му\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-01-01\",\"duration\":60}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andReturn();
-        mockMvc.perform(put("/films").
-                        contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"1\",\"name\":\"4 мушкетера\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-01-01\",\"duration\":120}")
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
