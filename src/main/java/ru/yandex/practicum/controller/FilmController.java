@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.exception.DefaultMessageException;
+import ru.yandex.practicum.exception.ExceptionDataRequest;
 import ru.yandex.practicum.model.Film;
 
 
@@ -27,11 +28,11 @@ public class FilmController {
     }
 
     @PostMapping("/films")
-    public ResponseEntity createFilm(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> createFilm(@Valid @RequestBody Film film) {
         log.info("Создание фильма");
         if (films.containsKey(film.getId())) {
             log.info("Фильм уже есть");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Фильм уже зарегестрирован"));
+            throw new ExceptionDataRequest("createFilm","Фильм уже зарегестрирован");
         } else {
             addFilm(film);
             return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
@@ -39,7 +40,7 @@ public class FilmController {
     }
 
     @PutMapping("/films")
-    public ResponseEntity updateFilm(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновление фильма");
         if (films.containsKey(film.getId())) {
             log.info("Фильм обновлен");
@@ -47,7 +48,7 @@ public class FilmController {
             return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
         } else {
             log.info("Фильм отсутствует");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Фильм для обновления отсутствует"));
+            throw new ExceptionDataRequest("createFilm","Фильм для обновления отсутствует");
         }
     }
 

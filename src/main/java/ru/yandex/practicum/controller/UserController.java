@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.exception.DefaultMessageException;
+import ru.yandex.practicum.exception.ExceptionDataRequest;
 import ru.yandex.practicum.model.User;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -35,11 +36,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         log.info("Создание пользователя");
         if (users.containsKey(user.getId())) {
             log.info("Создание пользователя");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь присутствует"));
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь присутствует"));
+            throw new ExceptionDataRequest("createUser","Пользователь уже присутствует");
         } else {
             addUser(user);
             return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
@@ -47,7 +49,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity updateUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
         log.info("Обновление пользователя");
         if (users.containsKey(user.getId())) {
             checkName(user);
@@ -56,7 +58,8 @@ public class UserController {
             return new ResponseEntity<User>(users.get(user.getId()), HttpStatus.OK);
         } else {
             log.info("Пользователь отсутствует");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь отсутствует"));
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DefaultMessageException("message","Пользователь отсутствует"));
+            throw new ExceptionDataRequest("updateUser","Пользователь отсутствует");
         }
     }
 

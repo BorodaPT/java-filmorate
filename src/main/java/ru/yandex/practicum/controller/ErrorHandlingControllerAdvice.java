@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import ru.yandex.practicum.exception.DefaultMessageException;
+import ru.yandex.practicum.exception.ExceptionDataRequest;
 import ru.yandex.practicum.validation.ValidationErrorResponse;
 import ru.yandex.practicum.validation.Violation;
 
@@ -49,4 +51,13 @@ public class ErrorHandlingControllerAdvice {
         log.error(e.getMessage(), e);
         return new ValidationErrorResponse(violations);
     }
+
+    @ExceptionHandler(ExceptionDataRequest.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public DefaultMessageException onExceptionDataRequest (ExceptionDataRequest e) {
+        return new DefaultMessageException(e.getNameExcept(), e.getMessage());
+    }
+
+
 }

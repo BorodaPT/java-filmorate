@@ -20,7 +20,7 @@ public class User {
     int id;
     @Email(message = "Неверный формат электронной почты")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "Логин не может быть пустым или состоять только из пробелов")
     @NotBlank(message = "Логин не может быть пустым или состоять только из пробелов")
     private String login;
     @Nullable
