@@ -55,7 +55,7 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(ExceptionDataRequest.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public DefaultMessageException onExceptionDataRequest (ExceptionDataRequest e) {
+    public DefaultMessageException onExceptionDataRequest(ExceptionDataRequest e) {
         return new DefaultMessageException(e.getNameExcept(), e.getMessage());
     }
 
