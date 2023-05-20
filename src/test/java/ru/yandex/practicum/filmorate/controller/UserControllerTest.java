@@ -30,7 +30,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.login").value("Testusers1"))
                 .andExpect(jsonPath("$.email").value("ya@mail.com"))
                 .andExpect(jsonPath("$.name").value("123"))
-                .andExpect(jsonPath("$.birthday").value("2019-04-04") )
+                .andExpect(jsonPath("$.birthday").value("2019-04-04"))
                 .andReturn();
     }
 
@@ -92,7 +92,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.login").value("Testusers1"))
                 .andExpect(jsonPath("$.email").value("ya@mail.com"))
                 .andExpect(jsonPath("$.name").value("ddd"))
-                .andExpect(jsonPath("$.birthday").value("2019-04-04") )
+                .andExpect(jsonPath("$.birthday").value("2019-04-04"))
                 .andReturn();
     }
 
