@@ -35,6 +35,7 @@ public class User {
     private LocalDate birthday;
     @Nullable
     private Set<Long> friends;
+
     public User() {
         friends = new HashSet<>();
     }
