@@ -113,7 +113,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return result;
     }
 
-    public void sortPopularFilm(){
+    public void sortPopularFilm() {
         popularFilm.clear();
         popularFilm.addAll(films.values());
     }
