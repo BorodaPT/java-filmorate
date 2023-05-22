@@ -34,6 +34,7 @@ public class FilmService {
         if (idUser < 1) throw new ExceptionNotFound("Обновление like","Не найден " + idUser);
         return filmStorage.setLike(idFilm, idUser, isInstalled);
     }
+
     public void deleteFilm(long id) {
         filmStorage.getFilm(id);
     }

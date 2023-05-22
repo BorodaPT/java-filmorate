@@ -33,6 +33,7 @@ public class User {
     @Past(message = "Дата рождения не может быть больше текущей")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+
     @Nullable
     private Set<Long> friends;
 
