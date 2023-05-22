@@ -2,59 +2,73 @@ package ru.yandex.practicum.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.exception.ExceptionDataRequest;
 import ru.yandex.practicum.model.Film;
-
-
+import ru.yandex.practicum.service.FilmService;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
+
 @RestController
+@Validated
 public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private int filmId = 0;
-    private HashMap<Integer, Film> films = new HashMap<>();
-
-    private void addFilm(Film film) {
-        filmId++;
-        film.setId(filmId);
-        films.put(film.getId(), film);
-    }
-
+    @Autowired
+    private FilmService filmService;
+    //POST
     @PostMapping("/films")
     public ResponseEntity<Film> createFilm(@Valid @RequestBody Film film) {
         log.info("Создание фильма");
-        if (films.containsKey(film.getId())) {
-            log.info("Фильм уже есть");
-            throw new ExceptionDataRequest("createFilm","Фильм уже зарегестрирован");
-        } else {
-            addFilm(film);
-            return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
-        }
+        return new ResponseEntity<Film>(filmService.create(film), HttpStatus.OK);
     }
-
+    //PUT
     @PutMapping("/films")
     public ResponseEntity<Film> updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновление фильма");
-        if (films.containsKey(film.getId())) {
-            log.info("Фильм обновлен");
-            films.put(film.getId(), film);
-            return new ResponseEntity<Film>(films.get(film.getId()), HttpStatus.OK);
-        } else {
-            log.info("Фильм отсутствует");
-            throw new ExceptionDataRequest("createFilm","Фильм для обновления отсутствует");
-        }
+        return new ResponseEntity<Film>(filmService.update(film), HttpStatus.OK);
+    }
+
+    @PutMapping("/films/{id}/like/{userId}")
+    public ResponseEntity<Film> updateFilmLike(@PathVariable @Positive(message = "id фильма не положительное число") long id,@PathVariable long userId) {
+        log.info("Обновление фильма");
+        return new ResponseEntity<Film>(filmService.updateLike(id,userId, true), HttpStatus.OK);
+    }
+
+    //GET
+    @GetMapping("/films/{id}")
+    public ResponseEntity<Film> selectFilm(@PathVariable @Positive(message = "id фильма не положительное число") long id) {
+        log.info("Обновление фильма");
+        return new ResponseEntity<Film>(filmService.getFilm(id), HttpStatus.OK);
     }
 
     @GetMapping("/films")
     public List<Film> getAll() {
-        log.debug("Текущее количество фильмов: {}", films.size());
-        return new ArrayList<Film>(films.values());
+        return filmService.getAll();
+    }
+
+    @GetMapping("/films/popular")
+    public List<Film> getPopularAll(@RequestParam(required = false,defaultValue = "10") Long count) {
+        log.info("Получение популярных фильмов");
+        return filmService.getPopular(count);
+    }
+
+    //DELETE
+    @DeleteMapping("/films/{id}")
+    public ResponseEntity deleteFilm(@PathVariable @Positive(message = "id фильма не положительное число") long id) {
+        log.info("Обновление фильма");
+        filmService.deleteFilm(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/films/{id}/like/{userId}")
+    public ResponseEntity<Film> updateFilmLikeDel(@PathVariable @Positive(message = "id фильма не положительное число") long id,@PathVariable long userId) {
+        log.info("Обновление фильма");
+        return new ResponseEntity<Film>(filmService.updateLike(id,userId, false), HttpStatus.OK);
     }
 
 }

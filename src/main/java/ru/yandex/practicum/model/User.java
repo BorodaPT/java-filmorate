@@ -10,6 +10,8 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import java.time.LocalDate;
 
 @Data
 public class User {
-    int id;
+    long id;
     @Email(message = "Неверный формат электронной почты")
     private String email;
     @NotEmpty(message = "Логин не может быть пустым или состоять только из пробелов")
@@ -28,4 +30,10 @@ public class User {
     @Past(message = "Дата рождения не может быть больше текущей")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+    @Nullable
+    private Set<Long> friends;
+
+    public User() {
+        friends = new HashSet<>();
+    }
 }

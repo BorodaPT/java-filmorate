@@ -1,14 +1,13 @@
 package ru.yandex.practicum.exception;
 
-public class ExceptionDataRequest extends RuntimeException {
-
+public class ExceptionNotFound extends RuntimeException {
     private final String nameExcept;
 
     public String getNameExcept() {
         return nameExcept;
     }
 
-    public ExceptionDataRequest(String nameExcept, String message) {
+    public ExceptionNotFound(String nameExcept, String message) {
         super(message);
         this.nameExcept = nameExcept;
     }
@@ -17,5 +16,4 @@ public class ExceptionDataRequest extends RuntimeException {
     public String getMessage() {
         return super.getMessage();
     }
-
 }

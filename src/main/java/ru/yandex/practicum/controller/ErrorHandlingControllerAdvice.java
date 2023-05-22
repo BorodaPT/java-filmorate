@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.yandex.practicum.exception.DefaultMessageException;
 import ru.yandex.practicum.exception.ExceptionDataRequest;
+import ru.yandex.practicum.exception.ExceptionNotFound;
 import ru.yandex.practicum.validation.ValidationErrorResponse;
 import ru.yandex.practicum.validation.Violation;
 
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class ErrorHandlingControllerAdvice {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-
+    //валидация
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -52,6 +53,8 @@ public class ErrorHandlingControllerAdvice {
         return new ValidationErrorResponse(violations);
     }
 
+
+    //ошибка прочее
     @ExceptionHandler(ExceptionDataRequest.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -59,5 +62,12 @@ public class ErrorHandlingControllerAdvice {
         return new DefaultMessageException(e.getNameExcept(), e.getMessage());
     }
 
+    //ошибка наличия
+    @ExceptionHandler(ExceptionNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public DefaultMessageException onExceptionNotFound(ExceptionNotFound e) {
+        return new DefaultMessageException(e.getNameExcept(), e.getMessage());
+    }
 
 }
