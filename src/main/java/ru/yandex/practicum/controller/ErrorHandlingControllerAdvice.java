@@ -20,8 +20,9 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ErrorHandlingControllerAdvice {
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    //валидация
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
