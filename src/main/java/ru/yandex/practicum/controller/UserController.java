@@ -30,7 +30,7 @@ public class UserController {
 
     //PUT
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser( @Valid @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
         log.info("Обновление пользователя");
         return new ResponseEntity<User>(userService.update(user), HttpStatus.OK);
     }
