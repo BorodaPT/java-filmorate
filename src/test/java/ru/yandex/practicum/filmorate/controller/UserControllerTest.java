@@ -83,7 +83,7 @@ public class UserControllerTest {
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andReturn();
-        mockMvc.perform(put("/users/1")
+        mockMvc.perform(put("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"1\", \"email\":\"ya@mail.com\",\"login\":\"Testusers1\",\"name\":\"ddd\",\"birthday\":\"2019-04-04\"}")
                         .characterEncoding("utf-8"))

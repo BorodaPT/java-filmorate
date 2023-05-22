@@ -85,7 +85,7 @@ public class FilmControllerTest {
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andReturn();
-        mockMvc.perform(put("/films/1")
+        mockMvc.perform(put("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"1\",\"name\":\"4 мушкетера\",\"description\":\"По рассказам великого писателя\",\"releaseDate\":\"2000-01-01\",\"duration\":120}")
                         .characterEncoding("utf-8"))
