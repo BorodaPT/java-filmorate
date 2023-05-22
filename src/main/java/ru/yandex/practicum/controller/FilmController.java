@@ -20,13 +20,13 @@ public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private FilmService filmService;
-    //POST
+
     @PostMapping("/films")
     public ResponseEntity<Film> createFilm(@Valid @RequestBody Film film) {
         log.info("Создание фильма");
         return new ResponseEntity<Film>(filmService.create(film), HttpStatus.OK);
     }
-    //PUT
+
     @PutMapping("/films")
     public ResponseEntity<Film> updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновление фильма");
@@ -39,7 +39,6 @@ public class FilmController {
         return new ResponseEntity<Film>(filmService.updateLike(id,userId, true), HttpStatus.OK);
     }
 
-    //GET
     @GetMapping("/films/{id}")
     public ResponseEntity<Film> selectFilm(@PathVariable @Positive(message = "id фильма не положительное число") long id) {
         log.info("Обновление фильма");
@@ -57,7 +56,6 @@ public class FilmController {
         return filmService.getPopular(count);
     }
 
-    //DELETE
     @DeleteMapping("/films/{id}")
     public ResponseEntity deleteFilm(@PathVariable @Positive(message = "id фильма не положительное число") long id) {
         log.info("Обновление фильма");

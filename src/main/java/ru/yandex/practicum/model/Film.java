@@ -24,15 +24,20 @@ public class Film {
     Long id;
     @NotBlank(message = "Название фильма не может быть пустым")
     private String name;
+
     @Size(max = 200, message = "Превышена максимальная длина описания(200)")
     private String description;
+
     @MinDateFilms(message = "Дата фильма не может быть меньше 28.12.1895")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
+
     @Positive(message = "Продолжительность должна быть положительной")
     private int duration;
+
     @Nullable
     private Set<Long> like;
+
     private long countLike;
 
     public Film() {

@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class UserController {
     @Autowired
     private UserService userService;
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    //POST
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         log.info("Создание пользователя");
