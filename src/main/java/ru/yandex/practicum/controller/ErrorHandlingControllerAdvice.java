@@ -20,12 +20,11 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ErrorHandlingControllerAdvice {
-
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     //валидация
-    @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public ValidationErrorResponse onConstraintValidationException(
             ConstraintViolationException e
     ) {
@@ -52,7 +51,6 @@ public class ErrorHandlingControllerAdvice {
         log.error(e.getMessage(), e);
         return new ValidationErrorResponse(violations);
     }
-
 
     //ошибка прочее
     @ExceptionHandler(ExceptionDataRequest.class)
