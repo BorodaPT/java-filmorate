@@ -72,7 +72,7 @@ public class FilmDbStorage implements FilmStorage {
                                             "SELECT g.* FROM GENRE g \n" +
                                                 "JOIN GENRE_FILM gf ON g.ID = gf.GENRE_ID \n" +
                                                 "WHERE gf.FILM_ID  = ? \n" +
-                                                "ORDER BY g.id" ,idFilm);
+                                                "ORDER BY g.id", idFilm);
         while (genreRows.next()) {
             genres.add(new Genre(genreRows.getInt("id"),genreRows.getString("name")));
         }
@@ -137,13 +137,13 @@ public class FilmDbStorage implements FilmStorage {
         String sqlQuery = "update films set " +
                 "name = ?, description = ?, duration = ?, releaseDate = ?, mpa_id = ? " +
                 "where id = ?";
-        if (jdbcTemplate.update(sqlQuery
-                , film.getName()
-                , film.getDescription()
-                , film.getDuration()
-                , film.getReleaseDate()
-                , film.getMpa().getId()
-                , film.getId()) > 0) {
+        if (jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getDuration(),
+                film.getReleaseDate(),
+                film.getMpa().getId(),
+                film.getId()) > 0) {
             createFilmGenre(film);
             return film;
         } else {
