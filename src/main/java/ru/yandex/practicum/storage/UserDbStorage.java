@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @Component("userDbStorage")
-public class UserDbStorage implements UserStorage{
+public class UserDbStorage implements UserStorage {
 
     private final Logger log = LoggerFactory.getLogger(UserDbStorage.class);
 
