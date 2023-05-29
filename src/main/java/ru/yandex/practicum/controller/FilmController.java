@@ -17,7 +17,9 @@ import java.util.List;
 @RestController
 @Validated
 public class FilmController {
+
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private FilmService filmService;
 
@@ -31,12 +33,6 @@ public class FilmController {
     public ResponseEntity<Film> updateFilm(@Valid @RequestBody Film film) {
         log.info("Обновление фильма");
         return new ResponseEntity<Film>(filmService.update(film), HttpStatus.OK);
-    }
-
-    @PutMapping("/films/{id}/like/{userId}")
-    public ResponseEntity<Film> updateFilmLike(@PathVariable @Positive(message = "id фильма не положительное число") long id,@PathVariable long userId) {
-        log.info("Обновление фильма");
-        return new ResponseEntity<Film>(filmService.updateLike(id,userId, true), HttpStatus.OK);
     }
 
     @GetMapping("/films/{id}")
@@ -61,6 +57,12 @@ public class FilmController {
         log.info("Обновление фильма");
         filmService.deleteFilm(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/films/{id}/like/{userId}")
+    public ResponseEntity<Film> updateFilmLike(@PathVariable @Positive(message = "id фильма не положительное число") long id,@PathVariable long userId) {
+        log.info("Обновление фильма");
+        return new ResponseEntity<Film>(filmService.updateLike(id,userId, true), HttpStatus.OK);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")

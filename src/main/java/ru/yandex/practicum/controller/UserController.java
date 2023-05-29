@@ -12,11 +12,12 @@ import ru.yandex.practicum.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Validated
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -49,19 +50,19 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ArrayList<User> getUsersAll() {
+    public List<User> getUsersAll() {
         log.debug("Получение всех пользователей");
         return userService.getUsers();
     }
 
     @GetMapping("/users/{id}/friends")
-    public ArrayList<User> getFriendAll(@PathVariable @Positive(message = "id пользователя не положительное число") long id) {
+    public List<User> getFriendAll(@PathVariable @Positive(message = "id пользователя не положительное число") long id) {
         log.debug("Получение списка друзей");
         return userService.getFriend(id);
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public ArrayList<User> getAll(@PathVariable @Positive(message = "id пользователя не положительное число") long id,
+    public List<User> getAll(@PathVariable @Positive(message = "id пользователя не положительное число") long id,
                                   @PathVariable @Positive(message = "id пользователя не положительное число") long otherId) {
         log.debug("Получение обзих друзей");
         return userService.getCommonFriend(id, otherId);

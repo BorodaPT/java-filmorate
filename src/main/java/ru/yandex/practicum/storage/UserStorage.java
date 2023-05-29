@@ -2,7 +2,7 @@ package ru.yandex.practicum.storage;
 
 import ru.yandex.practicum.model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserStorage {
     User getUser(long id);
@@ -13,11 +13,11 @@ public interface UserStorage {
 
     void delete(Long id);
 
-    ArrayList<User> getUsers();
+    List<User> getUsers();
 
-    ArrayList<User> getFriend(long id);
+    List<User> getFriend(long id);
 
-    ArrayList<User> getCommonFriend(long idUserMain, long idUserFriend);
+    List<User> getCommonFriend(long idUserMain, long idUserFriend);
 
     User addFriendPost(long idUserMain, long idUserFriend);
 

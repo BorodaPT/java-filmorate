@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
+@Component("inMemoryUserStorage")
 public class InMemoryUserStorage implements UserStorage {
 
     private long userId;
@@ -110,8 +110,8 @@ public class InMemoryUserStorage implements UserStorage {
         ArrayList<User> resultList = new ArrayList<>();
         Set<Long> friends = users.get(id).getFriends();
         if (!friends.isEmpty()) {
-            for (Long i : friends) {
-                resultList.add(users.get(i));
+            for (Long friend : friends) {
+                resultList.add(users.get(friend));
             }
         }
         return resultList;
@@ -122,12 +122,12 @@ public class InMemoryUserStorage implements UserStorage {
         ArrayList<User> resultList = new ArrayList<>();
         if (users.containsKey(idUserFriend) && users.containsKey(idUserMain)) {
             Set<Long> main = users.get(idUserMain).getFriends();
-            Set<Long> friend = users.get(idUserFriend).getFriends();
+            Set<Long> friends = users.get(idUserFriend).getFriends();
             Set<Long> intersection = new HashSet<>(main);
-            intersection.retainAll(friend);
+            intersection.retainAll(friends);
             if (!intersection.isEmpty()) {
-                for (Long i : intersection) {
-                    resultList.add(users.get(i));
+                for (Long friend : intersection) {
+                    resultList.add(users.get(friend));
                 }
             }
         }
