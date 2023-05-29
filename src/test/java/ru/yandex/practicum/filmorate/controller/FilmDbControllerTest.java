@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import ru.yandex.practicum.model.Film;
 import ru.yandex.practicum.model.Genre;
 import ru.yandex.practicum.model.Mpa;
+import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.storage.FilmDbStorage;
 
 import java.time.LocalDate;
@@ -85,41 +87,32 @@ public class FilmDbControllerTest {
     }
 
     @Test void getPopular() {
-        String sql = "INSERT INTO users (login,name,email,birthday) VALUES (?,?,?,?)";
-        jdbcTemplate.update(sql,
-                "testUser",
-                "testUser",
-                "testUser@gmail.com",
-                LocalDate.of(2000,1,1)
-                );
-        jdbcTemplate.update(sql,
-                "testUser2",
-                "testUser2",
-                "testUser2@gmail.com",
-                LocalDate.of(2010,3,8)
-        );
+        User user = new User(1,"login1","login1@mail.ru","name1", LocalDate.of(2010,1,2));
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("users")
+                .usingGeneratedKeyColumns("id");
+        long id = simpleJdbcInsert.executeAndReturnKey(user.toMap()).longValue();
+
         Film film1 = filmStorage.create(filmFirst);
         filmStorage.create(filmSecond);
-        filmStorage.setLike(film1.getId(),1L,true);
+        filmStorage.setLike(film1.getId(),id,true);
         List<Film> filmRes = filmStorage.getPopular(2);
         assertEquals(film1.getId(),filmRes.get(0).getId());
     }
 
     @Test
     public void setLikeAdd() {
-        String sql = "INSERT INTO users (login,name,email,birthday) VALUES (?,?,?,?)";
-        jdbcTemplate.update(sql,
-                "testUser",
-                "testUser",
-                "testUser@gmail.com",
-                LocalDate.of(2000, 1, 1)
-        );
+        User user = new User(1,"login1","login1@mail.ru","name1", LocalDate.of(2010,1,2));
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("users")
+                .usingGeneratedKeyColumns("id");
+        long id = simpleJdbcInsert.executeAndReturnKey(user.toMap()).longValue();
         Film film1 = filmStorage.create(filmFirst);
         Film film2 = filmStorage.create(filmSecond);
-        filmStorage.setLike(2L, 1L, true);
+        filmStorage.setLike(film2.getId(), id, true);
         List<Film> filmRes = filmStorage.getPopular(2);
         assertEquals(film2.getId(),filmRes.get(0).getId());
-        filmStorage.setLike(2L, 1L, false);
+        filmStorage.setLike(film2.getId(), id, false);
         filmRes = filmStorage.getPopular(2);
         assertEquals(film1.getId(),filmRes.get(0).getId());
     }
