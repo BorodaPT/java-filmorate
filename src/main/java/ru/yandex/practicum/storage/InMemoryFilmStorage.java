@@ -6,9 +6,11 @@ import ru.yandex.practicum.exception.ExceptionNotFound;
 import ru.yandex.practicum.model.Film;
 import java.util.*;
 
-@Component
+@Component("inMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
+
     private long filmId;
+
     private HashMap<Long, Film> films;
 
     private TreeSet<Film> popularFilm;

@@ -1,21 +1,20 @@
 package ru.yandex.practicum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.ExceptionNotFound;
 import ru.yandex.practicum.model.Film;
 import ru.yandex.practicum.storage.FilmStorage;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class FilmService {
-    @Autowired
-    private FilmStorage filmStorage;
 
-    //creatorsFilm
+    @Autowired
+    @Qualifier("filmDbStorage")
+    private FilmStorage filmStorage;
 
     public Film getFilm(long id) {
         return filmStorage.getFilm(id);
@@ -25,7 +24,6 @@ public class FilmService {
         return filmStorage.create(film);
     }
 
-    //updateFilms
     public Film update(Film film) {
         return filmStorage.update(film);
     }
@@ -43,7 +41,7 @@ public class FilmService {
         return new ArrayList<>(filmStorage.getFilms());
     }
 
-    public ArrayList<Film> getPopular(long count) {
+    public List<Film> getPopular(long count) {
         return filmStorage.getPopular(count);
     }
 }

@@ -2,7 +2,7 @@ package ru.yandex.practicum.storage;
 
 import ru.yandex.practicum.model.Film;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public interface FilmStorage {
@@ -17,8 +17,8 @@ public interface FilmStorage {
 
     Film setLike(Long idFilm, Long idUser, boolean isInstalled);
 
-    ArrayList<Film> getFilms();
+    List<Film> getFilms();
 
-    ArrayList<Film> getPopular(long count);
+    List<Film> getPopular(long count);
 
 }

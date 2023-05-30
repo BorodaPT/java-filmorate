@@ -1,17 +1,19 @@
 package ru.yandex.practicum.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.ExceptionNotFound;
 import ru.yandex.practicum.model.User;
 import ru.yandex.practicum.storage.UserStorage;
-import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class UserService {
 
     @Autowired
+    @Qualifier("userDbStorage")
     private UserStorage userStorage;
 
     public User getUser(long id) {
@@ -32,7 +34,7 @@ public class UserService {
        userStorage.delete(id);
     }
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return userStorage.getUsers();
     }
 
@@ -45,11 +47,11 @@ public class UserService {
         return userStorage.deleteFriendPost(idUserMain,idUserFriend);
     }
 
-    public ArrayList<User> getFriend(long id) {
+    public List<User> getFriend(long id) {
         return userStorage.getFriend(id);
     }
 
-    public ArrayList<User> getCommonFriend(long idUserMain, long idUserFriend) {
+    public List<User> getCommonFriend(long idUserMain, long idUserFriend) {
         return userStorage.getCommonFriend(idUserMain,idUserFriend);
     }
 }
