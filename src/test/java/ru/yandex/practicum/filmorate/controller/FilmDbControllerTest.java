@@ -1,9 +1,9 @@
 package ru.yandex.practicum.filmorate.controller;
 
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +12,7 @@ import ru.yandex.practicum.model.Film;
 import ru.yandex.practicum.model.Genre;
 import ru.yandex.practicum.model.Mpa;
 import ru.yandex.practicum.model.User;
-import ru.yandex.practicum.storage.FilmDbStorage;
+import ru.yandex.practicum.storage.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,13 +22,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmDbControllerTest {
 
-    private final FilmDbStorage filmStorage;
+    @Autowired
+    @Qualifier("filmDbStorage")
+    private FilmStorage filmStorage;
 
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     private static Film filmFirst;
+
     private static Film filmSecond;
 
     @BeforeEach
